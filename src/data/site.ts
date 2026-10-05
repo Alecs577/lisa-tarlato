@@ -22,13 +22,13 @@ export const whatsappHref = (message = site.whatsappMessage) =>
 
 /** Root-relative path that works locally and on GitHub Pages (`/lisa-tarlato/...`). */
 export const path = (to = "/") => {
-  const base = import.meta.env.BASE_URL;
+  const base = import.meta.env.BASE_URL.replace(/\/$/, "");
   if (/^(https?:|mailto:)/.test(to)) return to;
   const hashAt = to.indexOf("#");
   const hash = hashAt >= 0 ? to.slice(hashAt) : "";
   const file = (hashAt >= 0 ? to.slice(0, hashAt) : to).replace(/^\//, "");
-  if (!file) return `${base}${hash}`;
-  return `${base}${file}${hash}`;
+  if (!file) return `${base}/${hash}`;
+  return `${base}/${file}${hash}`;
 };
 
 export const nav = [
