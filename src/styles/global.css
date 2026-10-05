@@ -79,7 +79,8 @@ body {
       color 0.5s ease,
       background-color 0.5s ease,
       border-color 0.5s ease,
-      box-shadow 0.5s ease;
+      box-shadow 0.5s ease,
+      transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .pill::after {
@@ -104,12 +105,14 @@ body {
     }
 
     .pill:hover {
+      transform: translateY(-2px);
       box-shadow: 0 12px 28px -16px color-mix(in srgb, var(--color-terra) 70%, transparent);
     }
   }
 
   .pill:active {
-    transform: scale(0.98);
+    transform: scale(0.96);
+    transition-duration: 0.12s;
   }
 }
 
@@ -241,9 +244,12 @@ body.menu-open .cursor-ring {
     opacity: 1;
   }
 
+  .pill,
   .pill::after,
-  .pill:hover {
+  .pill:hover,
+  .pill:active {
     transition: none;
+    transform: none;
   }
 
   .marquee-track {

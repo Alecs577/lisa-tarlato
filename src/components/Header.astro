@@ -14,7 +14,7 @@ const { solid = false } = Astro.props;
   class:list={["fixed inset-x-0 top-0 z-50 transition-transform duration-500", solid && "is-solid"]}
 >
   <div class="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6 sm:py-4 md:px-8">
-    <a href={path("/#inizio")} class="flex min-w-0 items-center gap-2.5">
+    <a href={path("/#inizio")} class="flex min-w-0 items-center gap-2.5" data-nav-link>
       <SunMark class="h-9 w-9 shrink-0 sm:h-10 sm:w-10" />
       <span class="font-display text-xl tracking-wide text-mist mix-blend-difference sm:text-2xl">{site.name}</span>
     </a>
@@ -22,7 +22,7 @@ const { solid = false } = Astro.props;
     <nav class="hidden items-center gap-6 text-[11px] font-medium uppercase tracking-[0.18em] text-mist mix-blend-difference xl:gap-8 lg:flex">
       {
         nav.map((item) => (
-          <a class="opacity-80 transition hover:opacity-100" href={item.href}>
+          <a class="nav-link opacity-80" href={item.href} data-nav-link>
             {item.label}
           </a>
         ))
@@ -42,32 +42,41 @@ const { solid = false } = Astro.props;
     <button
       id="menu-btn"
       type="button"
-      class="inline-flex h-11 w-11 shrink-0 items-center justify-center text-mist mix-blend-difference lg:hidden"
+      class="menu-toggle inline-flex h-11 w-11 shrink-0 items-center justify-center text-mist mix-blend-difference lg:hidden"
       aria-expanded="false"
       aria-controls="mobile-menu"
       aria-label="Apri il menu"
     >
-      <svg class="menu-icon-open h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-        <path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h10"></path>
-      </svg>
-      <svg class="menu-icon-close hidden h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-        <path stroke-linecap="round" d="M6 6l12 12M18 6L6 18"></path>
-      </svg>
+      <span class="menu-toggle-bars" aria-hidden="true">
+        <span></span>
+        <span></span>
+      </span>
     </button>
   </div>
 </header>
 
-<div id="mobile-menu" class="fixed inset-0 z-40 hidden overflow-y-auto bg-ink px-6 pb-10 pt-28 text-mist sm:px-10 lg:hidden">
-  <nav class="flex flex-col gap-4 font-display text-4xl italic sm:text-5xl">
-    {
-      nav.map((item) => (
-        <a class="menu-link py-1" href={item.href}>
-          {item.label}
-        </a>
-      ))
-    }
-  </nav>
-  <a href={whatsappHref()} class="menu-link pill mt-10 bg-terra text-mist">Scrivi a Lisa</a>
+<div
+  id="mobile-menu"
+  data-mobile-menu
+  class="fixed inset-0 z-40 lg:hidden"
+  hidden
+  aria-hidden="true"
+>
+  <div data-menu-backdrop class="absolute inset-0 bg-ink/96"></div>
+  <div class="relative flex h-full flex-col px-6 pb-10 pt-28 sm:px-10">
+    <nav class="flex flex-col gap-3 font-display text-4xl italic text-mist sm:text-5xl">
+      {
+        nav.map((item) => (
+          <a class="menu-link py-1" href={item.href} data-nav-link data-menu-item>
+            {item.label}
+          </a>
+        ))
+      }
+    </nav>
+    <a href={whatsappHref()} class="menu-link pill mt-10 w-fit bg-terra text-mist" data-menu-item>
+      Scrivi a Lisa
+    </a>
+  </div>
 </div>
 
 <style>
@@ -97,25 +106,95 @@ const { solid = false } = Astro.props;
   [data-header].is-hidden {
     transform: translateY(-100%);
   }
+
+  .nav-link {
+    position: relative;
+    transition:
+      opacity 0.35s ease,
+      transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -0.35rem;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .nav-link:hover {
+      opacity: 1;
+    }
+
+    .nav-link:hover::after {
+      transform: scaleX(1);
+    }
+  }
+
+  .nav-link:active {
+    transform: translateY(1px);
+  }
+
+  .menu-toggle-bars {
+    position: relative;
+    display: block;
+    width: 1.15rem;
+    height: 0.75rem;
+  }
+
+  .menu-toggle-bars span {
+    position: absolute;
+    left: 0;
+    display: block;
+    height: 1.5px;
+    width: 100%;
+    background: currentColor;
+    transition:
+      transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+      top 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 0.3s ease;
+  }
+
+  .menu-toggle-bars span:first-child {
+    top: 0.1rem;
+  }
+
+  .menu-toggle-bars span:last-child {
+    top: 0.55rem;
+  }
+
+  body.menu-open .menu-toggle-bars span:first-child {
+    top: 0.32rem;
+    transform: rotate(45deg);
+  }
+
+  body.menu-open .menu-toggle-bars span:last-child {
+    top: 0.32rem;
+    transform: rotate(-45deg);
+  }
+
+  body.menu-open [data-header],
+  body.menu-open [data-header] * {
+    mix-blend-mode: normal;
+  }
+
+  body.menu-open [data-header] a,
+  body.menu-open [data-header] span,
+  body.menu-open [data-header] button {
+    color: var(--color-mist);
+  }
+
+  [data-mobile-menu] {
+    visibility: hidden;
+  }
+
+  [data-mobile-menu].is-open {
+    visibility: visible;
+  }
 </style>
-
-<script>
-  const btn = document.getElementById("menu-btn");
-  const menu = document.getElementById("mobile-menu");
-  const iconOpen = btn?.querySelector(".menu-icon-open");
-  const iconClose = btn?.querySelector(".menu-icon-close");
-
-  const setOpen = (open: boolean) => {
-    menu?.classList.toggle("hidden", !open);
-    document.body.classList.toggle("menu-open", open);
-    btn?.setAttribute("aria-expanded", String(open));
-    btn?.setAttribute("aria-label", open ? "Chiudi il menu" : "Apri il menu");
-    iconOpen?.classList.toggle("hidden", open);
-    iconClose?.classList.toggle("hidden", !open);
-  };
-
-  btn?.addEventListener("click", () => setOpen(menu?.classList.contains("hidden") ?? true));
-  document.querySelectorAll(".menu-link").forEach((link) => {
-    link.addEventListener("click", () => setOpen(false));
-  });
-</script>

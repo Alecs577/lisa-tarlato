@@ -155,7 +155,7 @@ const hero = () => {
 
   const media = section.querySelector("[data-hero-media]");
   const title = section.querySelector("[data-hero-title]");
-  const sun = section.querySelector("[data-hero-sun]");
+  const sun = section.querySelectorAll("[data-hero-sun]");
   const rest = section.querySelectorAll("[data-hero-copy]");
 
   if (reduced()) {
@@ -195,8 +195,10 @@ const hero = () => {
     end: "bottom top",
     scrub: true,
     onUpdate: (self) => {
-      gsap.set(media, { y: self.progress * 80 });
-      gsap.set(sun, { y: -self.progress * 140, opacity: 1 - self.progress * 0.6 });
+      gsap.set(media, { y: self.progress * (isDesktop() ? 80 : 36) });
+      if (isDesktop()) {
+        gsap.set(sun, { y: -self.progress * 140, opacity: 1 - self.progress * 0.6 });
+      }
     },
   });
 };
@@ -501,6 +503,140 @@ const dayShift = () => {
   }
 };
 
+const headerOffset = () => {
+  const el = document.querySelector<HTMLElement>("[data-header]");
+  return Math.round((el?.getBoundingClientRect().height ?? 72) + 12);
+};
+
+const samePath = (url: URL) => {
+  const here = location.pathname.replace(/\/$/, "") || "/";
+  const there = url.pathname.replace(/\/$/, "") || "/";
+  return url.origin === location.origin && here === there;
+};
+
+const scrollToHash = (hash: string) => {
+  const id = decodeURIComponent(hash.replace(/^#/, ""));
+  if (!id) return;
+  const target = document.getElementById(id);
+  if (!target) return;
+
+  const offset = headerOffset();
+  if (reduced()) {
+    const top = window.scrollY + target.getBoundingClientRect().top - offset;
+    window.scrollTo({ top, left: 0, behavior: "auto" });
+    return;
+  }
+
+  if (lenis) {
+    lenis.scrollTo(target, { offset: -offset, duration: 1.2 });
+    return;
+  }
+
+  const proxy = { y: window.scrollY };
+  const top = window.scrollY + target.getBoundingClientRect().top - offset;
+  gsap.to(proxy, {
+    y: top,
+    duration: 0.95,
+    ease: "power3.inOut",
+    overwrite: true,
+    onUpdate: () => window.scrollTo(0, proxy.y),
+  });
+};
+
+let menuOpen = false;
+let menuTl: gsap.core.Timeline | null = null;
+
+const setMenuOpen = (open: boolean) =>
+  new Promise<void>((resolve) => {
+    const menu = document.querySelector<HTMLElement>("[data-mobile-menu]");
+    const btn = document.getElementById("menu-btn");
+    const backdrop = menu?.querySelector("[data-menu-backdrop]");
+    const items = menu?.querySelectorAll("[data-menu-item]");
+    if (!menu) {
+      resolve();
+      return;
+    }
+
+    menuOpen = open;
+    document.body.classList.toggle("menu-open", open);
+    btn?.setAttribute("aria-expanded", String(open));
+    btn?.setAttribute("aria-label", open ? "Chiudi il menu" : "Apri il menu");
+
+    const finish = () => {
+      menu.classList.toggle("is-open", open);
+      menu.hidden = !open;
+      menu.setAttribute("aria-hidden", String(!open));
+      if (!open) menuTl = null;
+      resolve();
+    };
+
+    if (reduced()) {
+      gsap.set([backdrop, items], { clearProps: "all" });
+      finish();
+      return;
+    }
+
+    menuTl?.kill();
+
+    if (open) {
+      gsap.set(backdrop, { opacity: 0 });
+      gsap.set(items, { y: 28, opacity: 0 });
+      menu.hidden = false;
+      menu.classList.add("is-open");
+      menu.setAttribute("aria-hidden", "false");
+      menuTl = gsap.timeline({ onComplete: finish });
+      menuTl
+        .to(backdrop, { opacity: 1, duration: 0.4, ease: "power2.out" })
+        .to(
+          items,
+          { y: 0, opacity: 1, duration: 0.55, ease: "power3.out", stagger: 0.06 },
+          "-=0.18",
+        );
+      return;
+    }
+
+    menuTl = gsap.timeline({ onComplete: finish });
+    menuTl
+      .to(items, { y: -12, opacity: 0, duration: 0.28, ease: "power2.in", stagger: 0.03 })
+      .to(backdrop, { opacity: 0, duration: 0.32, ease: "power2.in" }, "-=0.12");
+  });
+
+const mobileMenu = () => {
+  const btn = document.getElementById("menu-btn");
+  btn?.addEventListener("click", () => {
+    void setMenuOpen(!menuOpen);
+  });
+};
+
+const inPageNav = () => {
+  document.addEventListener("click", (event) => {
+    const link = (event.target as HTMLElement | null)?.closest("a[href]");
+    if (!(link instanceof HTMLAnchorElement)) return;
+    if (link.hasAttribute("data-back")) return;
+
+    let url: URL;
+    try {
+      url = new URL(link.href, location.href);
+    } catch {
+      return;
+    }
+
+    if (!samePath(url) || !url.hash) {
+      if (menuOpen && link.closest("[data-mobile-menu]")) void setMenuOpen(false);
+      return;
+    }
+
+    event.preventDefault();
+    const go = () => {
+      scrollToHash(url.hash);
+      history.pushState(null, "", url.hash);
+    };
+
+    if (menuOpen) void setMenuOpen(false).then(go);
+    else go();
+  });
+};
+
 const header = () => {
   const el = document.querySelector<HTMLElement>("[data-header]");
   if (!el) return;
@@ -512,6 +648,10 @@ const header = () => {
     onUpdate: (self) => {
       const y = self.scroll();
       el.classList.toggle("is-solid", alwaysSolid || y > 40);
+      if (menuOpen) {
+        el.classList.remove("is-hidden");
+        return;
+      }
       if (!reduced() && y > 80) {
         el.classList.toggle("is-hidden", y > last && y > 120);
       } else {
@@ -577,6 +717,8 @@ const boot = async () => {
     contact();
     dayShift();
     header();
+    mobileMenu();
+    inPageNav();
     progress();
     cursor();
 
