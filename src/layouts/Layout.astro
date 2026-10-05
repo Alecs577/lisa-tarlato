@@ -1,6 +1,6 @@
 ---
 import "../styles/global.css";
-import { site } from "../data/site";
+import { path, site } from "../data/site";
 
 interface Props {
   title?: string;
@@ -14,7 +14,7 @@ const { title = site.title, description = site.description } = Astro.props;
 <html lang="it">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" type="image/jpeg" href="/logo.jpg" />
+    <link rel="icon" type="image/jpeg" href={path("logo.jpg")} />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />

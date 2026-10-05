@@ -1,5 +1,5 @@
 ---
-import { nav, site, whatsappHref } from "../data/site";
+import { nav, path, site, whatsappHref } from "../data/site";
 import SunMark from "./SunMark.astro";
 
 interface Props {
@@ -14,7 +14,7 @@ const { solid = false } = Astro.props;
   class:list={["fixed inset-x-0 top-0 z-50 transition-transform duration-500", solid && "is-solid"]}
 >
   <div class="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6 sm:py-4 md:px-8">
-    <a href="/#inizio" class="flex min-w-0 items-center gap-2.5">
+    <a href={path("/#inizio")} class="flex min-w-0 items-center gap-2.5">
       <SunMark class="h-9 w-9 shrink-0 sm:h-10 sm:w-10" />
       <span class="font-display text-xl tracking-wide text-mist mix-blend-difference sm:text-2xl">{site.name}</span>
     </a>

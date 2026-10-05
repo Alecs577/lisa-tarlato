@@ -1,6 +1,6 @@
 ---
 import SocialLinks from "./SocialLinks.astro";
-import { site } from "../data/site";
+import { path, site } from "../data/site";
 ---
 
 <section
@@ -10,7 +10,7 @@ import { site } from "../data/site";
 >
   <img
     data-contact-sun
-    src="/logo.jpg"
+    src={path("logo.jpg")}
     alt=""
     class="pointer-events-none absolute left-1/2 top-6 h-28 w-28 -translate-x-1/2 rounded-full object-cover opacity-25 sm:top-8 sm:h-40 sm:w-40 md:h-52 md:w-52"
   />

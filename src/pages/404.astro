@@ -1,7 +1,7 @@
 ---
 import Page from "../layouts/Page.astro";
 import SunMark from "../components/SunMark.astro";
-import { site } from "../data/site";
+import { path, site } from "../data/site";
 ---
 
 <Page title={`Pagina non trovata — ${site.name}`}>
@@ -15,8 +15,8 @@ import { site } from "../data/site";
       Puoi ripartire dal sito o scrivere a Lisa: ti aiuterà a trovare la proposta giusta per te.
     </p>
     <div class="mt-8 flex w-full max-w-sm flex-col gap-3 sm:w-auto sm:flex-row">
-      <a href="/" data-back class="pill w-full bg-terra text-mist sm:w-auto">Torna al sito</a>
-      <a href="/#contatti" class="pill w-full border border-ink/15 sm:w-auto">Scrivi a Lisa</a>
+      <a href={path("/")} data-back class="pill w-full bg-terra text-mist sm:w-auto">Torna al sito</a>
+      <a href={path("/#contatti")} class="pill w-full border border-ink/15 sm:w-auto">Scrivi a Lisa</a>
     </div>
   </main>
 </Page>

@@ -1,5 +1,5 @@
 ---
-import { listino, whatsappHref } from "../data/site";
+import { listino, path, whatsappHref } from "../data/site";
 import { stripePaymentLinks } from "../data/stripe-links";
 ---
 
@@ -66,7 +66,7 @@ import { stripePaymentLinks } from "../data/stripe-links";
                   return (
                     <li class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 gap-y-2 py-4 first:pt-4 last:pb-1">
                       <a
-                        href={"/pagamento/" + item.slug}
+                        href={path("/pagamento/" + item.slug)}
                         class="min-w-0 font-medium leading-snug text-ink transition hover:text-olive"
                       >
                         {item.short}

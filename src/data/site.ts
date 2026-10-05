@@ -20,12 +20,23 @@ export const site = {
 export const whatsappHref = (message = site.whatsappMessage) =>
   `https://wa.me/${site.whatsappNumber}?text=${encodeURIComponent(message)}`;
 
+/** Root-relative path that works locally and on GitHub Pages (`/lisa-tarlato/...`). */
+export const path = (to = "/") => {
+  const base = import.meta.env.BASE_URL;
+  if (/^(https?:|mailto:)/.test(to)) return to;
+  const hashAt = to.indexOf("#");
+  const hash = hashAt >= 0 ? to.slice(hashAt) : "";
+  const file = (hashAt >= 0 ? to.slice(0, hashAt) : to).replace(/^\//, "");
+  if (!file) return `${base}${hash}`;
+  return `${base}${file}${hash}`;
+};
+
 export const nav = [
-  { href: "/#chi-sono", label: "Chi sono" },
-  { href: "/#percorsi", label: "Yoga e trattamenti" },
-  { href: "/#pratica", label: "Lo studio" },
-  { href: "/#galleria", label: "Galleria" },
-  { href: "/#contatti", label: "Contatti" },
+  { href: path("/#chi-sono"), label: "Chi sono" },
+  { href: path("/#percorsi"), label: "Yoga e trattamenti" },
+  { href: path("/#pratica"), label: "Lo studio" },
+  { href: path("/#galleria"), label: "Galleria" },
+  { href: path("/#contatti"), label: "Contatti" },
 ];
 
 export const pillars = [

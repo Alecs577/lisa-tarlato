@@ -1,5 +1,6 @@
 import "vanilla-cookieconsent/dist/cookieconsent.css";
 import * as CookieConsent from "vanilla-cookieconsent";
+import { path } from "../data/site";
 
 export const initCookies = () =>
   CookieConsent.run({
@@ -40,7 +41,7 @@ export const initCookies = () =>
           acceptNecessaryBtn: "Solo necessari",
           showPreferencesBtn: "Personalizza",
           footer:
-            '<a href="/privacy">Privacy</a> · <a href="/cookie">Cookie</a>',
+            `<a href="${path("/privacy")}">Privacy</a> · <a href="${path("/cookie")}">Cookie</a>`,
         },
         preferencesModal: {
           title: "Preferenze cookie",
@@ -69,7 +70,7 @@ export const initCookies = () =>
             {
               title: "Di più",
               description:
-                'Dettagli in <a href="/privacy">Privacy</a> e <a href="/cookie">Cookie policy</a>.',
+                `Dettagli in <a href="${path("/privacy")}">Privacy</a> e <a href="${path("/cookie")}">Cookie policy</a>.`,
             },
           ],
         },
