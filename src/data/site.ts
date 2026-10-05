@@ -28,7 +28,8 @@ export const path = (to = "/") => {
   const hash = hashAt >= 0 ? to.slice(hashAt) : "";
   const file = (hashAt >= 0 ? to.slice(0, hashAt) : to).replace(/^\//, "");
   if (!file) return `${base}/${hash}`;
-  return `${base}/${file}${hash}`;
+  const isAsset = /\.[a-z0-9]+$/i.test(file);
+  return `${base}/${file}${isAsset ? "" : "/"}${hash}`;
 };
 
 export const nav = [

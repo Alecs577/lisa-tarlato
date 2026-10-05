@@ -7,6 +7,7 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
   site: "https://alecs577.github.io",
   base: "/lisa-tarlato",
+  trailingSlash: "always",
   vite: {
     plugins: [tailwindcss()]
   }

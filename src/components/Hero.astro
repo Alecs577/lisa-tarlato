@@ -2,24 +2,24 @@
 import { path, site, whatsappHref } from "../data/site";
 ---
 
-<section id="inizio" data-hero class="relative min-h-svh overflow-hidden text-mist">
+<section id="inizio" data-hero class="relative min-h-[88svh] overflow-hidden text-mist sm:min-h-svh">
   <div data-hero-media class="absolute inset-0">
     <img
       src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=2200&q=80"
       alt="Lezione di Hatha yoga"
-      class="h-full w-full object-cover"
+      class="h-full w-full object-cover object-[center_78%] sm:object-center"
     />
-    <div class="absolute inset-0 bg-linear-to-t from-ink/75 via-ink/30 to-ink/40"></div>
+    <div class="absolute inset-0 bg-linear-to-t from-ink/80 via-ink/35 to-ink/25 sm:from-ink/75 sm:via-ink/30 sm:to-ink/40"></div>
   </div>
 
   <img
     data-hero-sun
     src={path("logo.jpg")}
     alt=""
-    class="pointer-events-none absolute left-1/2 top-[11%] h-[4.5rem] w-[4.5rem] -translate-x-1/2 rounded-full object-cover shadow-[0_12px_40px_-18px_rgba(22,20,18,0.55)] sm:top-[14%] sm:h-24 sm:w-24 md:h-28 md:w-28"
+    class="pointer-events-none absolute left-1/2 top-[14%] hidden h-24 w-24 -translate-x-1/2 rounded-full object-cover shadow-[0_12px_40px_-18px_rgba(22,20,18,0.55)] sm:block md:h-28 md:w-28"
   />
 
-  <div class="relative mx-auto flex min-h-svh max-w-6xl flex-col justify-end px-4 pb-14 pt-24 sm:px-6 sm:pb-16 md:justify-center md:px-8 md:pb-24">
+  <div class="relative mx-auto flex min-h-[88svh] max-w-6xl flex-col justify-end px-4 pb-8 pt-24 sm:min-h-svh sm:px-6 sm:pb-16 md:justify-center md:px-8 md:pb-24">
     <p
       data-hero-copy
       data-anim
@@ -30,14 +30,32 @@ import { path, site, whatsappHref } from "../data/site";
     <h1
       data-hero-title
       data-anim
-      class="mt-5 max-w-none whitespace-nowrap font-display text-[clamp(1.4rem,6vw,4.5rem)] leading-[0.95] italic"
+      class="mt-4 max-w-[12ch] font-display text-[clamp(2.15rem,10vw,4.5rem)] leading-[0.95] italic sm:mt-5 sm:max-w-none sm:whitespace-nowrap"
     >
       Uno spazio dedicato a te
     </h1>
-    <p data-hero-copy data-anim class="mt-5 max-w-md text-base font-light leading-7 text-mist/90 sm:mt-6">
+    <p data-hero-copy data-anim class="mt-4 max-w-md text-[0.95rem] font-light leading-6 text-mist/90 sm:mt-6 sm:text-base sm:leading-7">
       Hatha yoga, massaggi e trattamenti a Cadro. Lezioni individuali o in piccoli gruppi, guidate con attenzione al tuo ritmo.
     </p>
-    <div data-hero-copy data-anim class="mt-8 flex w-full flex-col gap-3 sm:mt-9 sm:w-auto sm:flex-row sm:flex-wrap">
+    <ul
+      data-hero-copy
+      data-anim
+      class="mt-6 grid grid-cols-3 gap-3 border-t border-mist/25 pt-5 text-mist sm:hidden"
+    >
+      <li>
+        <p class="text-[10px] uppercase tracking-[0.16em] text-mist/70">Yoga</p>
+        <p class="mt-1 text-xs font-light leading-snug">Individuale o max 5</p>
+      </li>
+      <li>
+        <p class="text-[10px] uppercase tracking-[0.16em] text-mist/70">Trattamenti</p>
+        <p class="mt-1 text-xs font-light leading-snug">Massaggi e cura</p>
+      </li>
+      <li>
+        <p class="text-[10px] uppercase tracking-[0.16em] text-mist/70">Studio</p>
+        <p class="mt-1 text-xs font-light leading-snug">Via alla Cava, Cadro</p>
+      </li>
+    </ul>
+    <div data-hero-copy data-anim class="mt-6 flex w-full flex-col gap-3 sm:mt-9 sm:w-auto sm:flex-row sm:flex-wrap">
       <a href={whatsappHref()} class="pill w-full bg-terra text-mist sm:w-auto">Contatta Lisa</a>
       <a href={path("/#percorsi")} class="pill w-full border border-mist/50 text-mist sm:w-auto">Scopri le proposte</a>
     </div>
