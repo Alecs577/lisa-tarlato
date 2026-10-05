@@ -1,0 +1,121 @@
+---
+import { nav, site, whatsappHref } from "../data/site";
+import SunMark from "./SunMark.astro";
+
+interface Props {
+  solid?: boolean;
+}
+
+const { solid = false } = Astro.props;
+---
+
+<header
+  data-header
+  class:list={["fixed inset-x-0 top-0 z-50 transition-transform duration-500", solid && "is-solid"]}
+>
+  <div class="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6 sm:py-4 md:px-8">
+    <a href="/#inizio" class="flex min-w-0 items-center gap-2.5">
+      <SunMark class="h-9 w-9 shrink-0 sm:h-10 sm:w-10" />
+      <span class="font-display text-xl tracking-wide text-mist mix-blend-difference sm:text-2xl">{site.name}</span>
+    </a>
+
+    <nav class="hidden items-center gap-6 text-[11px] font-medium uppercase tracking-[0.18em] text-mist mix-blend-difference xl:gap-8 lg:flex">
+      {
+        nav.map((item) => (
+          <a class="opacity-80 transition hover:opacity-100" href={item.href}>
+            {item.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <a
+      href={whatsappHref()}
+      class="header-cta pill hidden items-center gap-2 bg-terra text-mist lg:inline-flex"
+    >
+      <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M19.05 4.91A9.82 9.82 0 0 0 12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.3-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.91-7.01zm-7.01 15.24h-.01a8.23 8.23 0 0 1-4.19-1.15l-.3-.18-3.14.82.84-3.06-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.23 8.25-8.23 2.2 0 4.27.86 5.82 2.42a8.18 8.18 0 0 1 2.41 5.83c0 4.55-3.7 8.24-8.22 8.24z"></path>
+      </svg>
+      Scrivi a Lisa
+    </a>
+
+    <button
+      id="menu-btn"
+      type="button"
+      class="inline-flex h-11 w-11 shrink-0 items-center justify-center text-mist mix-blend-difference lg:hidden"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+      aria-label="Apri il menu"
+    >
+      <svg class="menu-icon-open h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h10"></path>
+      </svg>
+      <svg class="menu-icon-close hidden h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" d="M6 6l12 12M18 6L6 18"></path>
+      </svg>
+    </button>
+  </div>
+</header>
+
+<div id="mobile-menu" class="fixed inset-0 z-40 hidden overflow-y-auto bg-ink px-6 pb-10 pt-28 text-mist sm:px-10 lg:hidden">
+  <nav class="flex flex-col gap-4 font-display text-4xl italic sm:text-5xl">
+    {
+      nav.map((item) => (
+        <a class="menu-link py-1" href={item.href}>
+          {item.label}
+        </a>
+      ))
+    }
+  </nav>
+  <a href={whatsappHref()} class="menu-link pill mt-10 bg-terra text-mist">Scrivi a Lisa</a>
+</div>
+
+<style>
+  [data-header].is-solid {
+    background: color-mix(in srgb, var(--color-dawn) 88%, transparent);
+    backdrop-filter: blur(16px);
+  }
+
+  [data-header].is-solid,
+  [data-header].is-solid * {
+    mix-blend-mode: normal;
+  }
+
+  [data-header].is-solid a,
+  [data-header].is-solid span,
+  [data-header].is-solid button {
+    color: var(--color-ink);
+  }
+
+  [data-header] .header-cta,
+  [data-header].is-solid .header-cta {
+    mix-blend-mode: normal;
+    background: var(--color-terra);
+    color: var(--color-mist);
+  }
+
+  [data-header].is-hidden {
+    transform: translateY(-100%);
+  }
+</style>
+
+<script>
+  const btn = document.getElementById("menu-btn");
+  const menu = document.getElementById("mobile-menu");
+  const iconOpen = btn?.querySelector(".menu-icon-open");
+  const iconClose = btn?.querySelector(".menu-icon-close");
+
+  const setOpen = (open: boolean) => {
+    menu?.classList.toggle("hidden", !open);
+    document.body.classList.toggle("menu-open", open);
+    btn?.setAttribute("aria-expanded", String(open));
+    btn?.setAttribute("aria-label", open ? "Chiudi il menu" : "Apri il menu");
+    iconOpen?.classList.toggle("hidden", open);
+    iconClose?.classList.toggle("hidden", !open);
+  };
+
+  btn?.addEventListener("click", () => setOpen(menu?.classList.contains("hidden") ?? true));
+  document.querySelectorAll(".menu-link").forEach((link) => {
+    link.addEventListener("click", () => setOpen(false));
+  });
+</script>

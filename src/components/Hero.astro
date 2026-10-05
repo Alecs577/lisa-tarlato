@@ -1,0 +1,45 @@
+---
+import { site, whatsappHref } from "../data/site";
+---
+
+<section id="inizio" data-hero class="relative min-h-svh overflow-hidden text-mist">
+  <div data-hero-media class="absolute inset-0">
+    <img
+      src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=2200&q=80"
+      alt="Lezione di Hatha yoga"
+      class="h-full w-full object-cover"
+    />
+    <div class="absolute inset-0 bg-linear-to-t from-ink/75 via-ink/30 to-ink/40"></div>
+  </div>
+
+  <img
+    data-hero-sun
+    src="/logo.jpg"
+    alt=""
+    class="pointer-events-none absolute left-1/2 top-[11%] h-[4.5rem] w-[4.5rem] -translate-x-1/2 rounded-full object-cover shadow-[0_12px_40px_-18px_rgba(22,20,18,0.55)] sm:top-[14%] sm:h-24 sm:w-24 md:h-28 md:w-28"
+  />
+
+  <div class="relative mx-auto flex min-h-svh max-w-6xl flex-col justify-end px-4 pb-14 pt-24 sm:px-6 sm:pb-16 md:justify-center md:px-8 md:pb-24">
+    <p
+      data-hero-copy
+      data-anim
+      class="inline-flex max-w-full self-start rounded-full bg-ink/45 px-3.5 py-1.5 text-[11px] uppercase tracking-[0.22em] text-mist shadow-[0_8px_24px_-12px_rgba(22,20,18,0.55)] backdrop-blur-sm"
+    >
+      {site.teacher} · {site.tagline}
+    </p>
+    <h1
+      data-hero-title
+      data-anim
+      class="mt-5 max-w-none whitespace-nowrap font-display text-[clamp(1.4rem,6vw,4.5rem)] leading-[0.95] italic"
+    >
+      Uno spazio dedicato a te
+    </h1>
+    <p data-hero-copy data-anim class="mt-5 max-w-md text-base font-light leading-7 text-mist/90 sm:mt-6">
+      Hatha yoga, massaggi e trattamenti a Cadro. Lezioni individuali o in piccoli gruppi, guidate con attenzione al tuo ritmo.
+    </p>
+    <div data-hero-copy data-anim class="mt-8 flex w-full flex-col gap-3 sm:mt-9 sm:w-auto sm:flex-row sm:flex-wrap">
+      <a href={whatsappHref()} class="pill w-full bg-terra text-mist sm:w-auto">Contatta Lisa</a>
+      <a href="/#percorsi" class="pill w-full border border-mist/50 text-mist sm:w-auto">Scopri le proposte</a>
+    </div>
+  </div>
+</section>

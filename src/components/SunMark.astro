@@ -1,0 +1,13 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className = "h-10 w-10" } = Astro.props;
+---
+
+<img
+  src="/logo.jpg"
+  alt=""
+  class:list={["rounded-full object-cover", className]}
+/>

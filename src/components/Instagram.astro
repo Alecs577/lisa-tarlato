@@ -1,0 +1,32 @@
+---
+import { instagramPosts, site } from "../data/site";
+---
+
+<section id="instagram" data-instagram class="scroll-mt-24 py-16 sm:py-24 md:py-32">
+  <div class="mx-auto max-w-6xl px-5 md:px-8">
+    <div data-anim class="flex flex-col items-start justify-between gap-5 sm:gap-6 md:flex-row md:items-end">
+      <div>
+        <p class="text-[11px] uppercase tracking-[0.28em] text-terra">Instagram</p>
+        <h2 class="mt-3 max-w-xl font-display text-3xl italic sm:text-4xl md:text-5xl">La pratica, oltre lo studio</h2>
+      </div>
+      <a href={site.instagramUrl} class="pill w-full border border-ink/15 sm:w-auto">@{site.instagramHandle}</a>
+    </div>
+
+    <div class="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-3 md:gap-4">
+      {
+        instagramPosts.map((src, i) => (
+          <a
+            href={site.instagramUrl}
+            data-ig
+            data-anim
+            class="group relative aspect-square overflow-hidden"
+            aria-label={`Apri Instagram, post ${i + 1}`}
+          >
+            <img src={src} alt="" loading="lazy" class="h-full w-full object-cover transition duration-700 group-hover:scale-105" />
+            <span class="absolute inset-0 bg-terra/0 transition group-hover:bg-terra/20"></span>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</section>

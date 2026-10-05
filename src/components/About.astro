@@ -1,0 +1,44 @@
+---
+import { site } from "../data/site";
+---
+
+<section id="chi-sono" data-about class="relative scroll-mt-24 overflow-hidden py-16 sm:py-24 md:py-32">
+  <div class="mx-auto grid max-w-6xl items-end gap-10 px-5 sm:gap-12 md:grid-cols-12 md:px-8">
+    <div class="relative md:col-span-5">
+      <div data-about-portrait data-anim class="overflow-hidden">
+        <img
+          src="https://images.unsplash.com/photo-1545389336-cf090694435e?auto=format&fit=crop&w=1200&q=80"
+          alt={`${site.teacher} nella pratica`}
+          class="aspect-3/4 w-full object-cover"
+        />
+      </div>
+      <div
+        data-about-side
+        data-anim
+        class="absolute -right-4 bottom-8 hidden w-28 overflow-hidden shadow-xl lg:-right-10 lg:block lg:w-36"
+      >
+        <img
+          src="https://images.unsplash.com/photo-1552196563-55cd4e45efb3?auto=format&fit=crop&w=500&q=80"
+          alt="Dettaglio di una pratica"
+          class="aspect-4/5 object-cover"
+        />
+      </div>
+    </div>
+
+    <div class="md:col-span-6 md:col-start-7">
+      <p data-about-line data-anim class="text-[11px] uppercase tracking-[0.28em] text-terra">Chi sono</p>
+      <h2 data-about-line data-anim class="mt-3 font-display text-3xl italic leading-tight sm:text-4xl md:text-5xl">
+        Hatha yoga e trattamenti, con attenzione
+      </h2>
+      <p data-about-line data-anim class="mt-7 font-light leading-8 text-stone">
+        Sono {site.teacher}. Nel mio studio a Cadro propongo lezioni di Hatha yoga, massaggio classico
+        o drenante, riflessologia plantare e linfodrenaggio. Ogni proposta è guidata con cura e
+        modulata sulle esigenze della persona.
+      </p>
+      <p data-about-line data-anim class="mt-4 font-light leading-8 text-stone">
+        Puoi avvicinarti alla pratica anche senza esperienza. Se hai dubbi su quale proposta scegliere,
+        ne parliamo insieme prima di fissare l’appuntamento.
+      </p>
+    </div>
+  </div>
+</section>

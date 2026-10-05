@@ -1,0 +1,139 @@
+---
+import { listino, whatsappHref } from "../data/site";
+import { stripePaymentLinks } from "../data/stripe-links";
+---
+
+<section id="percorsi" class="scroll-mt-24 py-16 sm:py-20 md:py-28">
+  <div class="mx-auto max-w-6xl px-5 md:px-8">
+    <div data-anim class="grid gap-6 md:grid-cols-[0.8fr_1.2fr] md:items-end">
+      <div>
+        <p class="text-[11px] uppercase tracking-[0.28em] text-terra">Listino</p>
+        <h2 class="mt-3 font-display text-3xl italic sm:text-4xl md:text-5xl">Scegli la tua esperienza</h2>
+      </div>
+      <p class="max-w-xl font-light leading-7 text-stone md:justify-self-end">
+        Lezioni individuali o in piccoli gruppi, massaggi e trattamenti. Consulta durata e tariffe, oppure contattami per un consiglio.
+      </p>
+    </div>
+
+    <div class="mt-9 flex gap-2 border-b border-ink/15 pb-3 sm:mt-12" role="tablist" aria-label="Categorie del listino">
+      {listino.map((group, index) => (
+        <button
+          type="button"
+          role="tab"
+          id={"listino-tab-" + group.id}
+          aria-controls={"listino-panel-" + group.id}
+          aria-selected={index === 0 ? "true" : "false"}
+          tabindex={index === 0 ? 0 : -1}
+          data-listino-tab={group.id}
+          class:list={[
+            "rounded-full border px-5 py-2.5 text-[11px] uppercase tracking-[0.14em] transition-colors sm:px-6",
+            index === 0
+              ? "border-olive bg-olive text-mist"
+              : "border-ink/15 text-stone hover:border-olive hover:text-ink",
+          ]}
+        >
+          {group.name}
+        </button>
+      ))}
+    </div>
+
+    {listino.map((group, index) => (
+      <div
+        id={"listino-panel-" + group.id}
+        role="tabpanel"
+        aria-labelledby={"listino-tab-" + group.id}
+        data-listino-panel={group.id}
+        hidden={index !== 0}
+        class="pt-8"
+      >
+        <p class="mb-6 max-w-2xl font-light leading-7 text-stone">{group.text}</p>
+        <div class="grid gap-4 lg:grid-cols-2">
+          {group.sections.map((section) => (
+            <article class="rounded-[1.4rem] border border-ink/10 bg-mist/65 p-5 sm:p-6">
+              <div class="flex items-start justify-between gap-4 border-b border-ink/10 pb-4">
+                <h3 class="font-display text-xl italic sm:text-2xl">{section.subgroup}</h3>
+                <span class="mt-1 shrink-0 text-[10px] uppercase tracking-[0.14em] text-stone">
+                  {section.items.length} {section.items.length === 1 ? "opzione" : "opzioni"}
+                </span>
+              </div>
+
+              <ul class="divide-y divide-ink/10">
+                {section.items.map((item) => {
+                  const saving = Math.round(
+                    ((Number(item.priceOld) - Number(item.price)) / Number(item.priceOld)) * 100,
+                  );
+                  const paymentLink = stripePaymentLinks[item.slug];
+                  return (
+                    <li class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 gap-y-2 py-4 first:pt-4 last:pb-1">
+                      <a
+                        href={"/pagamento/" + item.slug}
+                        class="min-w-0 font-medium leading-snug text-ink transition hover:text-olive"
+                      >
+                        {item.short}
+                        {item.sessions.includes("max") && (
+                          <span class="mt-1 block text-[11px] font-normal text-stone">Piccolo gruppo · max 5</span>
+                        )}
+                      </a>
+                      <div class="flex items-center justify-end gap-2 sm:gap-3">
+                        <span class="text-xs text-stone line-through decoration-stone/70">CHF {item.priceOld}</span>
+                        <span class="font-display text-xl text-ink sm:text-2xl">CHF {item.price}</span>
+                        {saving > 0 && (
+                          <span class="rounded-full bg-olive/10 px-2 py-1 text-[9px] font-semibold tracking-wide text-olive">
+                            −{saving}%
+                          </span>
+                        )}
+                      </div>
+                      <span class="text-[11px] text-stone">{item.duration}</span>
+                      <a
+                        href={paymentLink || whatsappHref("Ciao Lisa, vorrei il link per pagare “" + item.name + "” (" + item.duration + ").")}
+                        class="justify-self-end text-[10px] font-medium uppercase tracking-[0.14em] text-olive underline decoration-olive/30 underline-offset-4 hover:decoration-olive"
+                      >
+                        {paymentLink ? "Vai al pagamento" : "Chiedi come pagare"}
+                      </a>
+                    </li>
+                  );
+                })}
+              </ul>
+            </article>
+          ))}
+        </div>
+        <p class="mt-6 text-xs font-light text-stone">
+          Prezzi in CHF. Per i pacchetti, la tariffa promozionale è mostrata accanto al prezzo precedente.
+        </p>
+      </div>
+    ))}
+  </div>
+</section>
+
+<script>
+  const tabs = [...document.querySelectorAll<HTMLButtonElement>("[data-listino-tab]")];
+  const panels = [...document.querySelectorAll<HTMLElement>("[data-listino-panel]")];
+
+  const activate = (id: string, focus = false) => {
+    tabs.forEach((tab) => {
+      const selected = tab.dataset.listinoTab === id;
+      tab.setAttribute("aria-selected", String(selected));
+      tab.tabIndex = selected ? 0 : -1;
+      tab.classList.toggle("bg-olive", selected);
+      tab.classList.toggle("text-mist", selected);
+      tab.classList.toggle("border-olive", selected);
+      tab.classList.toggle("text-stone", !selected);
+      tab.classList.toggle("border-ink/15", !selected);
+      if (selected && focus) tab.focus();
+    });
+    panels.forEach((panel) => {
+      panel.hidden = panel.dataset.listinoPanel !== id;
+    });
+  };
+
+  tabs.forEach((tab, index) => {
+    tab.addEventListener("click", () => activate(tab.dataset.listinoTab ?? ""));
+    tab.addEventListener("keydown", (event) => {
+      if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+      event.preventDefault();
+      const direction = event.key === "ArrowRight" ? 1 : -1;
+      const next = tabs[(index + direction + tabs.length) % tabs.length];
+      activate(next.dataset.listinoTab ?? "", true);
+    });
+  });
+</script>

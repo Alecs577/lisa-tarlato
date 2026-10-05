@@ -1,0 +1,39 @@
+---
+import SocialLinks from "./SocialLinks.astro";
+import { site } from "../data/site";
+---
+
+<section
+  id="contatti"
+  data-contact
+  class="relative scroll-mt-24 overflow-hidden bg-ink py-20 text-mist sm:py-28 md:py-36"
+>
+  <img
+    data-contact-sun
+    src="/logo.jpg"
+    alt=""
+    class="pointer-events-none absolute left-1/2 top-6 h-28 w-28 -translate-x-1/2 rounded-full object-cover opacity-25 sm:top-8 sm:h-40 sm:w-40 md:h-52 md:w-52"
+  />
+
+  <div class="relative mx-auto max-w-3xl px-5 text-center md:px-8">
+    <p data-contact-copy data-anim class="text-[11px] uppercase tracking-[0.28em] text-gold">Contatti</p>
+    <h2
+      data-contact-title
+      data-anim
+      class="mt-4 font-display text-3xl italic leading-tight sm:text-4xl md:text-6xl"
+    >
+      Prenota il tuo appuntamento
+    </h2>
+    <p data-contact-copy data-anim class="mx-auto mt-6 max-w-md font-light leading-8 text-mist/75">
+      Per informazioni sulle proposte o per verificare la disponibilità, scrivimi su WhatsApp.
+    </p>
+    <p data-contact-copy data-anim class="mt-4">
+      <a href={site.mapsUrl} class="text-sm uppercase tracking-[0.18em] text-gold hover:text-mist">
+        {site.address} · {site.city}
+      </a>
+    </p>
+    <div data-contact-copy data-anim class="mt-10">
+      <SocialLinks />
+    </div>
+  </div>
+</section>

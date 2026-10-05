@@ -1,0 +1,36 @@
+---
+import { gallery } from "../data/site";
+
+const phrase = "respiro · presenza · luce";
+const repeats = Array.from({ length: 8 }, () => phrase);
+---
+
+<section id="galleria" class="scroll-mt-24 py-16 sm:py-24 md:py-32">
+  <div class="mx-auto max-w-6xl px-5 md:px-8">
+    <div data-anim class="max-w-lg">
+      <p class="text-[11px] uppercase tracking-[0.28em] text-terra">Galleria</p>
+      <h2 class="mt-3 font-display text-3xl italic sm:text-4xl md:text-5xl">Uno sguardo allo studio</h2>
+    </div>
+
+    <div class="mt-10 grid auto-rows-[140px] grid-cols-2 gap-2 sm:mt-12 sm:auto-rows-[200px] sm:gap-3 md:auto-rows-[240px] md:grid-cols-4 md:gap-4">
+      {
+        gallery.map((item) => (
+          <figure data-gallery-item data-anim class:list={["overflow-hidden", item.class ?? ""]}>
+            <img src={item.src} alt={item.alt} loading="lazy" class="h-full w-full object-cover" />
+          </figure>
+        ))
+      }
+    </div>
+  </div>
+
+  <div class="marquee mt-16 text-[11px] uppercase tracking-[0.4em] text-stone" aria-hidden="true">
+    <div class="marquee-track">
+      <div class="marquee-group">
+        {repeats.map((text) => <span>{text}</span>)}
+      </div>
+      <div class="marquee-group">
+        {repeats.map((text) => <span>{text}</span>)}
+      </div>
+    </div>
+  </div>
+</section>

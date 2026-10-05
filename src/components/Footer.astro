@@ -1,0 +1,24 @@
+---
+import SunMark from "./SunMark.astro";
+import { site } from "../data/site";
+---
+
+<footer class="bg-ink text-mist/70">
+  <div class="mx-auto flex max-w-6xl flex-col items-start justify-between gap-6 px-5 py-10 sm:px-8 md:flex-row md:items-center">
+    <div class="flex items-center gap-3 text-mist">
+      <SunMark class="h-9 w-9" />
+      <div>
+        <p class="font-display text-xl">{site.name}</p>
+        <p class="text-[11px] uppercase tracking-[0.16em] opacity-60">{site.tagline} · {site.city}</p>
+      </div>
+    </div>
+    <button
+      type="button"
+      class="text-[11px] uppercase tracking-[0.16em] hover:text-mist"
+      data-cc="show-preferencesModal"
+    >
+      Gestisci cookie
+    </button>
+    <p class="text-xs">© {new Date().getFullYear()} {site.name}</p>
+  </div>
+</footer>
